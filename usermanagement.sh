@@ -1,20 +1,21 @@
 #!/bin/bash
 # Week 3 Challenge 1: User Account Management
 
-# INPUT FROM USER
+# INPUT FROM USER - Taking the arguements via command line from user
 ACTION="$1"
 USERNAME="$2"
 PASSWD="$3"
 
 # FUNCTIONS
 
+#-z "$USERNAME" checks if user name is empty
 create_user() {
     if [ -z "$USERNAME" ]; then
         echo "Enter a valid username, it cannot be empty"
         exit 1
     fi
     echo "Username to be created is valid - $USERNAME"
-
+    
     if id "$USERNAME" &>/dev/null; then
         echo "User '$USERNAME' already exists."
         exit 1
@@ -47,7 +48,6 @@ delete_user() {
     fi
 }
 
-# RESET PASSWORD
 reset_password() {
     if ! id "$USERNAME" &>/dev/null; then
         echo "User '$USERNAME' does not exist."
@@ -74,13 +74,13 @@ reset_password() {
     fi
 }
 
-# LIST USERS
+
 list_users() {
     echo "Listing all user accounts on the system:"
     awk -F':' '{print "Username: " $1 ", UID: " $3}' /etc/passwd
 }
 
-# ACTION HANDLER
+# switch case used
 case "$ACTION" in
     create)
         create_user
